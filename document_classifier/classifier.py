@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import joblib
@@ -10,11 +10,16 @@ from document_classifier.utils.error_handlers import ModelNotTrainedError
 
 class DocumentClassifier:
     def __init__(self):
-        self.vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1,3))
-        self.model = LogisticRegression(class_weight='balanced',
-                                      max_iter=1000,
-                                      C=0.1,
-                                      solver='liblinear')
+        self.vectorizer = TfidfVectorizer(max_features=5000,
+                                        ngram_range=(1,3),
+                                        stop_words='english',
+                                        min_df=2,
+                                        vocabulary=['financial', 'revenue', 'profit', 'expenses', 'report', 'statement'])
+        self.model = LogisticRegression(class_weight={'Financial': 2, 'Legal': 1, 'Technical': 1},
+                                      max_iter=2000,
+                                      C=0.01,
+                                      solver='liblinear',
+                                      penalty='l2')
         self.is_trained = False
         self.classes_ = None
 
