@@ -1,7 +1,7 @@
-import os
 from document_classifier.classifier import DocumentClassifier
 from document_classifier.utils.file_utils import validate_file
 from document_classifier.utils.error_handlers import InvalidFileError, ModelNotTrainedError
+import os
 
 def test_classification():
     """Test the document classification workflow"""
