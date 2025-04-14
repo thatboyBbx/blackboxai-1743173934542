@@ -8,11 +8,13 @@ def validate_file(file_path):
         'application/pdf',
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'text/plain'
     ]
     
     # Check file extension
-    valid_extensions = ('.pdf', '.doc', '.docx', '.txt')
+    valid_extensions = ('.pdf', '.doc', '.docx', '.xlsx', '.pptx', '.txt')
     if not file_path.lower().endswith(valid_extensions):
         return False
     
@@ -31,11 +33,3 @@ def create_category_folder(category):
     path.mkdir(exist_ok=True, parents=True)
     return path
 
-def get_document_text(file_path):
-    """Extract text from supported document types"""
-    # TODO: Implement text extraction for PDF/DOCX
-    # For now just handles text files
-    if file_path.endswith('.txt'):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
-    return ""
