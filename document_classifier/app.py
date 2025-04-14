@@ -49,7 +49,7 @@ class DocumentClassifierApp:
     def upload_document(self):
         file_path = filedialog.askopenfilename(
             title="Select Document",
-            filetypes=[("Documents", "*.pdf *.docx *.txt")]
+            filetypes=[("Documents", "*.pdf *.docx *.xlsx *.pptx *.txt")]
         )
         
         if not file_path:
