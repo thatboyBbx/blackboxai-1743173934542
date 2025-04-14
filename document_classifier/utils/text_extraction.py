@@ -1,6 +1,34 @@
 import PyPDF2
 import docx
+from openpyxl import load_workbook
+from pptx import Presentation
 from .error_handlers import TextExtractionError
+
+def extract_text_from_xlsx(file_path):
+    """Extract text from Excel files"""
+    try:
+        text = []
+        wb = load_workbook(file_path)
+        for sheet in wb.sheetnames:
+            ws = wb[sheet]
+            for row in ws.iter_rows(values_only=True):
+                text.append(" ".join(str(cell) for cell in row if cell))
+        return "\n".join(text)
+    except Exception as e:
+        raise TextExtractionError(file_path, f"Excel extraction failed: {str(e)}")
+
+def extract_text_from_pptx(file_path):
+    """Extract text from PowerPoint files"""
+    try:
+        text = []
+        prs = Presentation(file_path)
+        for slide in prs.slides:
+            for shape in slide.shapes:
+                if hasattr(shape, "text"):
+                    text.append(shape.text)
+        return "\n".join(text)
+    except Exception as e:
+        raise TextExtractionError(file_path, f"PowerPoint extraction failed: {str(e)}")
 
 def extract_text_from_pdf(file_path):
     """Extract text from PDF files"""
@@ -28,6 +56,10 @@ def get_document_text(file_path):
         return extract_text_from_pdf(file_path)
     elif file_path.endswith('.docx'):
         return extract_text_from_docx(file_path)
+    elif file_path.endswith('.xlsx'):
+        return extract_text_from_xlsx(file_path)
+    elif file_path.endswith('.pptx'):
+        return extract_text_from_pptx(file_path)
     elif file_path.endswith('.txt'):
         with open(file_path, 'r', encoding='utf-8') as f:
             return f.read()
