@@ -5,8 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import joblib
-from document_classifier.utils.text_extraction import get_document_text
-from document_classifier.utils.error_handlers import ModelNotTrainedError
+from utils.text_extraction import get_document_text
+from utils.error_handlers import ModelNotTrainedError
 
 class DocumentClassifier:
     def __init__(self):
